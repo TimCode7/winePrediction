@@ -40,7 +40,7 @@ class WineQualityPredictor:
 
 
 # Usage :
-predictor = WineQualityPredictor("data/Wines.csv")
+predictor = WineQualityPredictor("/app/data/Wines.csv")
 predictor.train_model()
 predictor.predict_test()
 
