@@ -1,23 +1,27 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import pandas as pd
+import pickle
 
 
 class WineQualityPredictor:
     def __init__(self, csv_file):
         self.data = pd.read_csv(csv_file)
-        self.X = self.data.drop(columns=["quality", "Id"])  # Features
-        self.y = self.data["quality"]  # Cible
+        self.X = self.data.drop(columns=["quality", "Id"])
+        self.y = self.data["quality"]
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             self.X, self.y, test_size=0.2, random_state=42
         )
+        print(self.X_test.head())
         self.scaler = StandardScaler()
         self.X_train_normalized = self.scaler.fit_transform(self.X_train)
         self.X_test_normalized = self.scaler.transform(self.X_test)
-        self.model = LinearRegression()
+        self.model = RandomForestRegressor(n_estimators=100, random_state=42)
 
     def train_model(self):
         self.model.fit(self.X_train_normalized, self.y_train)
@@ -42,21 +46,27 @@ class WineQualityPredictor:
 # Usage :
 predictor = WineQualityPredictor("data/Wines.csv")
 predictor.train_model()
+try:
+    with open("data/wine_quality_model.pickle", "wb") as file:
+        pickle.dump(predictor.model, file)
+    print("Modèle sauvegardé avec succès.")
+except Exception as e:
+    print(f"{e}")
 predictor.predict_test()
 
 # Pour prédire la qualité d'un nouveau vin :
 new_data = {
-    "fixed acidity": 7.9,
-    "volatile acidity": 0.35,
-    "citric acid": 0.46,
-    "residual sugar": 3.6,
-    "chlorides": 0.078,
-    "free sulfur dioxide": 15.0,
-    "total sulfur dioxide": 37.0,
-    "density": 0.9973,
-    "pH": 3.35,
-    "sulphates": 0.86,
-    "alcohol": 12.8,
+    "fixed acidity": 6.9,
+    "volatile acidity": 0.84,
+    "citric acid": 0.21,
+    "residual sugar": 4.1,
+    "chlorides": 0.074,
+    "free sulfur dioxide": 16.0,
+    "total sulfur dioxide": 65.0,
+    "density": 0.99842,
+    "pH": 3.53,
+    "sulphates": 0.72,
+    "alcohol": 9.233333,
 }
 
 predicted_quality = predictor.predict_quality(new_data)
