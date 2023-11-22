@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  wineapp:
+    image: wineapp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 5002:5002
