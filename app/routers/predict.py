@@ -1,14 +1,14 @@
 from fastapi import APIRouter
 
-from model.WineQualityInput import WineQualityInput
-from model.WineQualityPredictorTree import WineQualityPredictorTree
+from app.model.WineQualityInput import WineQualityInput
+from app.model.WineQualityPredictorTree import WineQualityPredictorTree
 from joblib import load
 from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 
-predictor = load("data/wine_quality_model.joblib")
+predictor = load("app/data/wine_quality_model.joblib")
 
 
 @router.get("/api/predict")

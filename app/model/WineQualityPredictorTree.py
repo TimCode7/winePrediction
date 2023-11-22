@@ -6,7 +6,7 @@ import pandas as pd
 from joblib import dump
 import pickle
 
-from model.WineQualityInput import WineQualityInput
+from app.model.WineQualityInput import WineQualityInput
 
 
 class WineQualityPredictorTree:
@@ -60,7 +60,7 @@ class WineQualityPredictorTree:
         Sauvegarde le modèle dans un fichier .joblib
         """
         try:
-            dump(self, "data/wine_quality_model.joblib")
+            dump(self, "app/data/wine_quality_model.joblib")
             print("Modèle sauvegardé avec succès.")
         except Exception as e:
             print(f"{e}")
@@ -71,6 +71,10 @@ class WineQualityPredictorTree:
         """
         return pickle.dumps(self)
 
+
+wineQualityPredictorTree = WineQualityPredictorTree("app/data/Wines.csv")
+wineQualityPredictorTree.train_model()
+wineQualityPredictorTree.save_model()
 
 # new_data = {
 #     "fixed acidity": 7.5,

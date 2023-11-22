@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Response
-from model.WineCsvInput import WineCsvInput
-from model.WineQualityPredictorTree import WineQualityPredictorTree
+from app.model.WineCsvInput import WineCsvInput
+from app.model.WineQualityPredictorTree import WineQualityPredictorTree
 import pickle
 from joblib import load
 import pandas as pd
@@ -8,7 +8,7 @@ import pandas as pd
 
 router = APIRouter()
 
-predictor = load("data/wine_quality_model.joblib")
+predictor = load("app/data/wine_quality_model.joblib")
 
 
 @router.get("/api/model")
